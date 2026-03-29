@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
-from core.config import settings
-
+import os
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
@@ -9,11 +8,16 @@ from core.prompts import STORY_PROMPT
 from models.story import Story, StoryNode
 from core.models import StoryLLMResponse, StoryNodeLLM
 from core.models import StoryLLMResponse
-
+from dotenv import load_dotenv
+load_dotenv()
 class StoryGenerator: 
     @classmethod
     def _get_llm(cls):
-        return ChatOpenAI(model="gpt-4-turbo")
+        return ChatOpenAI(
+            model="llama-3.3-70b-versatile", 
+            api_key=os.getenv("GROQ_API_KEY"), 
+            base_url="https://api.groq.com/openai/v1"
+        )
     @classmethod
     def generate_story(cls, db: Session, session_id: str, theme: str="fantasy") -> Story:
         llm = cls._get_llm()
@@ -38,7 +42,7 @@ class StoryGenerator:
             response_text = raw_response.content
         story_structure = story_parser.parse(response_text)
 
-        story_db=Story(title=story_structure.tilte, session_id=session_id)
+        story_db=Story(title=story_structure.title, session_id=session_id)
         db.add(story_db)
         db.flush()
 
