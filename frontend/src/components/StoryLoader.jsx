@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {useParams, useNavigate} from "react";
+import {useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import LoadingStatus from "./LoadingStatus.jsx";
 import StoryGame from "./StoryGame.jsx";
@@ -14,7 +14,10 @@ function StoryLoader()
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
+    useEffect(() => {
+        loadStory(id)
+    }, [id])
+    
     const loadStory = async (storyId)=>{
         setLoading(true)
         setError(null)

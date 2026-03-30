@@ -1,6 +1,6 @@
 import { useState, useEffect} from "react";
 
-function StoryGame(){
+function StoryGame({story, onNewStory}){
     const [currentNodeId, setCurrentNodeId]=useState(null);
     const [currentNode, setCurrentNode] = useState(null);
     const [options, setOptions] = useState([])

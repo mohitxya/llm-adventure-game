@@ -1,12 +1,28 @@
 import './App.css'
-//2:30:00
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import StoryLoader from "./components/StoryLoader"
+import { useState } from 'react'
+import StoryGenerator from './components/StoryGenerator'
+
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      
-    </>
+    <Router>
+        <div className='app-container'>
+          <header>
+            <h1>Interactive Story Generator</h1>
+          </header>
+          <main>
+            <Routes>
+              <Route path={"/story/:id"} element={<StoryLoader />}/>
+              <Route path={"/"} element={<StoryGenerator/>}/>
+            </Routes>
+          </main>
+
+        </div>
+    </Router>
   )
 }
 
